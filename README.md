@@ -2,6 +2,8 @@
 
 ChangePilot is a small engineering change management application with a Spring Boot API and a React/Vite frontend.
 
+![ChangePilot screenshot](changepilot.png)
+
 ## Repository structure
 
 - `changepilot-api/` - Java 21, Spring Boot, Maven Wrapper backend.
