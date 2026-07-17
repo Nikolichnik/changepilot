@@ -6,9 +6,12 @@ interface PageShellProps extends PropsWithChildren {
   title: string;
   subtitle?: string;
   actions?: ReactNode;
+  heroClassName?: string;
 }
 
-export function PageShell({ eyebrow, title, subtitle, actions, children }: PageShellProps) {
+export function PageShell({ eyebrow, title, subtitle, actions, children, heroClassName }: PageShellProps) {
+  const heroClasses = ['hero', 'card', heroClassName].filter(Boolean).join(' ');
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -23,8 +26,8 @@ export function PageShell({ eyebrow, title, subtitle, actions, children }: PageS
         </Link>
       </header>
       <main className="page">
-        <section className="hero card">
-          <div>
+        <section className={heroClasses}>
+          <div className="hero__content">
             {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
             <h1>{title}</h1>
             {subtitle ? <p className="hero__subtitle">{subtitle}</p> : null}

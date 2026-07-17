@@ -135,7 +135,7 @@ export function ChangeForm({ mode, initialValues, busy, criteriaEditable, fieldE
 
   return (
     <form className="card form-panel" onSubmit={handleSubmit}>
-      <div className="section-heading">
+      <div className="section-heading section-heading--form">
         <div>
           <h2>{mode === 'create' ? 'New change flight plan' : 'Edit change metadata'}</h2>
           <p>Titles, narrative, risk, components, and draft criteria live here.</p>
@@ -190,7 +190,7 @@ export function ChangeForm({ mode, initialValues, busy, criteriaEditable, fieldE
             value={values.description}
             onChange={(event) => updateValue('description', event.target.value)}
             disabled={busy}
-            rows={6}
+            rows={5}
             required
           />
           {clientErrors.description ? <small className="field-error">{clientErrors.description}</small> : null}
@@ -208,15 +208,15 @@ export function ChangeForm({ mode, initialValues, busy, criteriaEditable, fieldE
             <h3>Affected components</h3>
             <p>Optional, trimmed on submit, duplicates rejected by the backend.</p>
           </div>
-          <button className="button button--ghost" type="button" onClick={addComponent} disabled={busy}>
+          <button className="button button--ghost button--compact" type="button" onClick={addComponent} disabled={busy}>
             Add component
           </button>
         </div>
         <div className="stack-list">
           {values.affectedComponents.length === 0 ? <p className="muted">No components listed yet.</p> : null}
           {values.affectedComponents.map((component, index) => (
-            <div className="inline-row" key={`component-${index}`}>
-              <label className="inline-row__grow">
+            <div className="repeated-row" key={`component-${index}`}>
+              <label className="repeated-row__field">
                 <span className="sr-only">Affected component {index + 1}</span>
                 <input
                   value={component}
@@ -224,9 +224,11 @@ export function ChangeForm({ mode, initialValues, busy, criteriaEditable, fieldE
                   disabled={busy}
                 />
               </label>
-              <button className="button button--ghost" type="button" onClick={() => removeComponent(index)} disabled={busy}>
-                Remove
-              </button>
+              <div className="repeated-row__action">
+                <button className="button button--ghost button--compact" type="button" onClick={() => removeComponent(index)} disabled={busy}>
+                  Remove
+                </button>
+              </div>
             </div>
           ))}
           {serverFieldMessages.affectedComponents.map((message) => (
@@ -244,18 +246,18 @@ export function ChangeForm({ mode, initialValues, busy, criteriaEditable, fieldE
             <p>{criteriaEditable ? 'Edit scope criteria here. Completion is managed separately from the detail view.' : 'Criteria are locked by the current backend status.'}</p>
           </div>
           {criteriaEditable ? (
-            <button className="button button--ghost" type="button" onClick={addCriterion} disabled={busy}>
+            <button className="button button--ghost button--compact" type="button" onClick={addCriterion} disabled={busy}>
               Add criterion
             </button>
           ) : null}
         </div>
         <div className="stack-list">
           {values.criteria.map((criterion, index) => (
-            <div className="inline-row inline-row--top" key={criterion.id ?? `new-${index}`}>
-              <label className="inline-row__grow">
+            <div className="repeated-row repeated-row--top" key={criterion.id ?? `new-${index}`}>
+              <label className="repeated-row__field">
                 <span className="sr-only">Acceptance criterion {index + 1}</span>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={criterion.text}
                   onChange={(event) => updateArrayItem('criteria', index, event.target.value)}
                   disabled={busy || !criteriaEditable}
@@ -264,9 +266,11 @@ export function ChangeForm({ mode, initialValues, busy, criteriaEditable, fieldE
                 />
               </label>
               {criteriaEditable ? (
-                <button className="button button--ghost" type="button" onClick={() => removeCriterion(index)} disabled={busy}>
-                  Remove
-                </button>
+                <div className="repeated-row__action">
+                  <button className="button button--ghost button--compact" type="button" onClick={() => removeCriterion(index)} disabled={busy}>
+                    Remove
+                  </button>
+                </div>
               ) : null}
             </div>
           ))}
@@ -279,7 +283,7 @@ export function ChangeForm({ mode, initialValues, busy, criteriaEditable, fieldE
         </div>
       </section>
 
-      <div className="button-row">
+      <div className="button-row form-actions">
         <button className="button button--primary" type="submit" disabled={busy}>
           {busy ? 'Saving…' : mode === 'create' ? 'Create change' : 'Save update'}
         </button>
