@@ -261,7 +261,7 @@ export function ChangePage() {
         </section>
       ) : null}
 
-      <section className="detail-grid">
+      <section className="detail-grid detail-grid--top">
         <article className="card detail-panel">
           <div className="detail-header">
             <StatusBadge status={detail.status} />
@@ -293,9 +293,11 @@ export function ChangePage() {
               <p>Status transitions come directly from the backend response.</p>
             </div>
           </div>
-          <div className="transition-list">
+          <div className="lifecycle-panel__status">
             <span className="transition-current">Current: {STATUS_LABELS[detail.status]}</span>
             {detail.availableTransitions.length === 0 ? <p className="muted">No transitions available.</p> : null}
+          </div>
+          <div className="transition-list lifecycle-panel__actions">
             {detail.availableTransitions.map((status) => (
               <button
                 className="button button--ghost"
@@ -309,28 +311,32 @@ export function ChangePage() {
             ))}
           </div>
           {detail.deletable ? (
-            <button className="button button--danger" type="button" onClick={handleDelete} disabled={detailActionsDisabled}>
-              {deleteBusy ? 'Deleting…' : 'Delete draft'}
-            </button>
+            <div className="lifecycle-panel__danger">
+              <button className="button button--danger" type="button" onClick={handleDelete} disabled={detailActionsDisabled}>
+                {deleteBusy ? 'Deleting…' : 'Delete draft'}
+              </button>
+            </div>
           ) : null}
         </article>
       </section>
 
       {editMode ? (
-        <ChangeForm
-          mode="edit"
-          initialValues={formValues}
-          busy={formBusy}
-          criteriaEditable={Boolean(criteriaEditable)}
-          fieldErrors={fieldErrors}
-          formError={formError}
-          onSubmit={handleSubmit}
-          onCancel={() => {
-            setEditMode(false);
-            setFormError(null);
-            setFieldErrors([]);
-          }}
-        />
+        <section className="detail-edit-section">
+          <ChangeForm
+            mode="edit"
+            initialValues={formValues}
+            busy={formBusy}
+            criteriaEditable={Boolean(criteriaEditable)}
+            fieldErrors={fieldErrors}
+            formError={formError}
+            onSubmit={handleSubmit}
+            onCancel={() => {
+              setEditMode(false);
+              setFormError(null);
+              setFieldErrors([]);
+            }}
+          />
+        </section>
       ) : null}
 
       <section className="detail-grid detail-grid--stacked">

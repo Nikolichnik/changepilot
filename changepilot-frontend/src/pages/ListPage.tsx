@@ -54,24 +54,31 @@ export function ListPage() {
       eyebrow="Control tower"
       title="Lifecycle rail for engineering changes"
       subtitle="Track each change request from draft through verification with concise progress, risk, and status signals."
+      heroClassName="hero--list"
       actions={
         <Link className="button button--primary" to="/changes/new">
           Open new change
         </Link>
       }
     >
-      <section className="card toolbar">
-        <label>
-          <span>Status filter</span>
-          <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as ChangeStatus | 'ALL')}>
-            <option value="ALL">All statuses</option>
-            {CHANGE_STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {STATUS_LABELS[status]}
-              </option>
-            ))}
-          </select>
-        </label>
+      <section className="card toolbar toolbar--filters" aria-label="List controls">
+        <div className="toolbar__intro">
+          <h2>Filter changes</h2>
+          <p>Use filters below to narrow the engineering change list.</p>
+        </div>
+        <div className="toolbar__fields">
+          <label className="toolbar__field">
+            <span>Status</span>
+            <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as ChangeStatus | 'ALL')}>
+              <option value="ALL">All statuses</option>
+              {CHANGE_STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {STATUS_LABELS[status]}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </section>
 
       {loading ? <section className="card state">Loading engineering changes…</section> : null}
@@ -83,7 +90,7 @@ export function ListPage() {
       {!loading && !error && changes.length === 0 ? <section className="card state">No changes found for this filter.</section> : null}
 
       {!loading && !error && changes.length > 0 ? (
-        <section className="change-grid">
+        <section className="change-grid change-grid--list">
           {changes.map((change) => (
             <article className="card change-card" key={change.id}>
               <div className="change-card__rail" aria-hidden="true" />
