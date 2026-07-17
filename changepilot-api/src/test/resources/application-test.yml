@@ -1,0 +1,8 @@
+changepilot:
+  demo-data:
+    enabled: false
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
