@@ -1,0 +1,25 @@
+services:
+  changepilot-api:
+    build:
+      target: development
+    working_dir: /workspace/changepilot-api
+    command: ["./mvnw", "-B", "-ntp", "spring-boot:run"]
+    volumes:
+      - ../../../changepilot-api:/workspace/changepilot-api
+      - changepilot-api-m2:/root/.m2
+      - changepilot-api-target:/workspace/changepilot-api/target
+
+  changepilot-frontend:
+    build:
+      target: development
+    working_dir: /workspace/changepilot-frontend
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "8080"]
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ../../../changepilot-frontend/src:/workspace/changepilot-frontend/src
+
+volumes:
+  changepilot-api-m2:
+  changepilot-api-target:

@@ -1,0 +1,28 @@
+name: changepilot
+
+services:
+  changepilot-api:
+    build:
+      context: ../../..
+      dockerfile: changepilot-deployment/docker/image/changepilot-api/Dockerfile
+      target: runtime
+    init: true
+    restart: unless-stopped
+    environment:
+      CHANGEPILOT_ALLOWED_ORIGIN: ${CHANGEPILOT_ALLOWED_ORIGIN:-http://localhost:5173}
+    ports:
+      - "${CHANGEPILOT_API_PORT:-8080}:8080"
+
+  changepilot-frontend:
+    build:
+      context: ../../..
+      dockerfile: changepilot-deployment/docker/image/changepilot-frontend/Dockerfile
+      target: runtime
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+    init: true
+    restart: unless-stopped
+    depends_on:
+      - changepilot-api
+    ports:
+      - "${CHANGEPILOT_FRONTEND_PORT:-5173}:8080"
